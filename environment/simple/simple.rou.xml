@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+    <!-- Définition d’un type de véhicule -->
+    <vType id="car" accel="1.0" decel="5.0" length="2.0" maxSpeed="25" sigma="0.0" />
+    <!-- Définition d’une route passant par les deux arêtes -->
+    <route id="route0" edges="edge1 edge2"/>
+    <!-- Insertion d’un véhicule avec l’identifiant "veh0" -->
+    <vehicle id="veh0" type="car" route="route0" depart="0"/>
+</routes>

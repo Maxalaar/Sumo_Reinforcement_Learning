@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+    <input>
+        <!-- Réseau généré précédemment -->
+        <net-file value="simple.net.xml"/>
+        <!-- Fichier de demande de déplacements -->
+        <route-files value="simple.rou.xml"/>
+    </input>
+    <time>
+        <!-- Début de la simulation (en secondes) -->
+        <begin value="0"/>
+        <!-- Fin de la simulation -->
+        <end value="1000"/>
+        <!-- Pas de temps de simulation -->
+        <step-length value="0.1"/>
+    </time>
+</configuration>
