@@ -13,11 +13,10 @@ class SumoEnvironment(gym.Env):
         # Configuration SUMO
         if environment_configuration is None:
             environment_configuration = {}
-        self.sumo_config = {
-            "sumocfg_file": environment_configuration.get('sumo_configuration_path', Path('environment/hello/hello.sumocfg')),
-            "simulation_end": environment_configuration.get('simulation_end', 1000),
-            "gui": environment_configuration.get('use_gui', False),
-        }
+
+        self.sumo_configuration_path = environment_configuration.get('sumo_configuration_path', Path('environment/hello/hello.sumocfg'))
+        self.max_time = environment_configuration.get('max_time', 1000)
+        self.use_gui = environment_configuration.get('use_gui', False)
 
         # Définition de l'espace d'observation (exemple : [position, vitesse])
         self.observation_space = spaces.Box(low=0, high=1000, shape=(2,), dtype=np.float32)
@@ -31,11 +30,11 @@ class SumoEnvironment(gym.Env):
         super().reset(seed=seed)
 
         # Choisir le binaire SUMO
-        sumo_binary = sumolib.checkBinary('sumo' if not self.sumo_config["gui"] else 'sumo-gui')
+        sumo_binary = sumolib.checkBinary('sumo' if not self.use_gui else 'sumo-gui')
         # Préparer la commande en utilisant le fichier simple.sumocfg
         self.sumo_cmd = [
             sumo_binary,
-            "-c", self.sumo_config["sumocfg_file"],
+            "-c", self.sumo_configuration_path,
             "--quit-on-end", "1"
         ]
         traci.start(self.sumo_cmd)
@@ -55,7 +54,7 @@ class SumoEnvironment(gym.Env):
         self.sumo.simulationStep()
 
         reward = self._calculate_reward()
-        terminated = self.sumo.simulation.getTime() >= self.sumo_config["simulation_end"]
+        terminated = self.sumo.simulation.getTime() >= self.max_time
         truncated = False
 
         return self._get_observation(), reward, terminated, truncated, {}
